@@ -14,7 +14,7 @@ public class Transishion : MonoBehaviour
         if (Other.tag == Playertag) {
             if (Input.GetKey(KeyCode.E)) {
                 SceneManager.LoadScene(ScenNumber);
-
+                
             }
         }
     }

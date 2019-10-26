@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerMoov : MonoBehaviour
 {
@@ -8,32 +9,25 @@ public class PlayerMoov : MonoBehaviour
     public Vector2 Vect;
 	const int speed = 5;
 
+
     private void Start()
 	{
-        Vect.x = PlayerPrefs.GetFloat("VectX");
-        Vect.y = PlayerPrefs.GetFloat("VectY");
+        loadPosition();
         Application.targetFrameRate = 60;
-        transform.position = Vect;
-        if ((Vect.x <= -10 || Vect.x >= 0) && (Vect.y <= -2 || Vect.y >= 5))
-        {
-            Vect = new Vector2(-9.53f, -1.22f);
-        }
+        
     }
 
     private void Update()
-    { 
+    {
 
-        if (Vect.x==0.0f){
-            Vect.x = -9.53f;
-            Vect.y = -1.22f;
+         if (Input.GetKeyDown(KeyCode.R))
+            savePosition();
+
+        if (Input.GetKeyDown(KeyCode.L))
+        {
+            loadPosition();
 
         }
-        Vect.x = transform.position.x;
-        PlayerPrefs.SetFloat("VectX",Vect.x);
-        PlayerPrefs.Save();
-        Vect.y = transform.position.y;
-        PlayerPrefs.SetFloat("VectY", Vect.y);
-        PlayerPrefs.Save();
         if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow))
             {
                 Player.transform.Translate(Vector2.up * speed * Time.deltaTime);
@@ -77,14 +71,50 @@ public class PlayerMoov : MonoBehaviour
             {
                 Player.transform.Translate(Vector2.right * speed * Time.deltaTime);
             Player.GetComponent<Animator>().SetTrigger("right");
-        }
-        else{
+            }
+            else
+        {
                 Player.GetComponent<Animator>().SetTrigger("Nright");
             }
 
 
         
 
+    }
+    public void savePosition()
+    {
+
+        Transform CurrentPlayerPosition = this.gameObject.transform;
+
+        PlayerPrefs.SetFloat("PosX", CurrentPlayerPosition.position.x);
+        PlayerPrefs.SetFloat("PosY", CurrentPlayerPosition.position.y);
+    }
+
+    public void loadPosition()
+    {
+
+        Transform CurrentPlayerPosition = this.gameObject.transform;
+
+        Vector2 PlayerPosition = new Vector2(PlayerPrefs.GetFloat("PosX"),
+                    PlayerPrefs.GetFloat("PosY"));
+
+        CurrentPlayerPosition.position = PlayerPosition;
+    }
+    
+    public string Playertag;
+
+
+    private void OnTriggerStay2D(Collider2D Other)
+    {
+        if (Other.tag == Playertag)
+        {
+            if (Input.GetKey(KeyCode.E))
+            {
+                savePosition();
+                
+
+            }
+        }
     }
 }
 
