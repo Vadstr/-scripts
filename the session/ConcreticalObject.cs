@@ -2,22 +2,20 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Scene : DynamicObject
+public class ConcreticalObject : DynamicObject
 {
     public GameObject obj1;
-    public GameObject obj2;
     DynamicObject Dobj1 = new DynamicObject();
-    DynamicObject Dobj2 = new DynamicObject();
+    public string Name;
+    public float PositionZ;
 
     void Start()
     {
-        
-        Dobj1.name = "stul1";
-        Dobj2.name = "stul2";
+
+        Dobj1.name = Name;
         Dobj1.obj = obj1;
-        Dobj2.obj = obj2;
         Dobj1.loadPosition();
-        Dobj2.loadPosition();
+        Dobj1.PosZ = PositionZ;
 
     }
 
@@ -25,6 +23,5 @@ public class Scene : DynamicObject
     void Update()
     {
         Dobj1.savePosition();
-        Dobj2.savePosition();
     }
 }
